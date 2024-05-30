@@ -1,18 +1,11 @@
 const express = require("express");
+const cors = require("cors")
 const { getPublicRepos, getReadmeContents } = require("./controller");
 require("dotenv").config();
 const app = express();
 app.use(express.json());
 
-app.options("/portfolio-be", (req, res) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://portfolio.helmfarm.co.uk"
-  );
-  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  res.sendStatus(204);
-});
+app.use(cors());
 
 app.get("/portfolio-be", getPublicRepos);
 
