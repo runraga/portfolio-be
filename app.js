@@ -5,13 +5,12 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 
-var corsOptions = {
-  origin: "https://portfolio.helmfarm.co.uk",
-  preflightContinue: true,
-  optionsSuccessStatus: 204,
-};
-
-app.options("*", cors(corsOptions));
+app.options("*", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.sendStatus(204);
+});
 
 app.get("/portfolio-be", getPublicRepos);
 
