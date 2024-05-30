@@ -5,7 +5,11 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 
-app.options("*", cors());
+var corsOptions = {
+  origin: "https://portfolio.helmfarm.co.uk",
+};
+
+app.options("*", cors(corsOptions));
 
 app.get("/portfolio-be", getPublicRepos);
 
