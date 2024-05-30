@@ -6,8 +6,7 @@ const conn = axios.create({
   headers: {
     Accept: "application/vnd.github+json",
     "User-Agent": "runraga",
-    Authorization:
-    process.env.GIT_HUB_AUTHENTICATION,
+    Authorization: process.env.GIT_HUB_AUTHENTICATION,
   },
 });
 
@@ -57,7 +56,10 @@ getPublicRepos = (req, res, next) => {
     })
     .then((reposWithReadme) => {
       Promise.all(reposWithReadme).then((results) => {
-        res.header("Access-Control-Allow-Origin", "*");
+        res.header(
+          "Access-Control-Allow-Origin",
+          "https://portfolio.helmfarm.co.uk"
+        );
         res.status(200).send(results);
       });
     })
@@ -65,7 +67,6 @@ getPublicRepos = (req, res, next) => {
       console.log("err", err);
       next(err);
     });
-    
 };
 
 module.exports = {
