@@ -198,7 +198,7 @@ const results = [
 ];
 
 getPublicRepos = (req, res, next) => {
-  res.status(200).send({ data: [{ test: 1 }] });
+  res.status(200).send(results);
 
   // conn
   //   .get("/users/runraga/repos")
@@ -229,7 +229,7 @@ getPublicRepos = (req, res, next) => {
 };
 
 module.exports = {
-  getReadmeContents,
-  convertReadme,
+  // getReadmeContents,
+  // convertReadme,
   getPublicRepos,
 };
