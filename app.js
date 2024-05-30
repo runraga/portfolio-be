@@ -7,6 +7,8 @@ app.use(express.json());
 
 var corsOptions = {
   origin: "https://portfolio.helmfarm.co.uk",
+  preflightContinue: true,
+  optionsSuccessStatus: 204,
 };
 
 app.options("*", cors(corsOptions));
