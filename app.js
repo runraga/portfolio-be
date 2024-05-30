@@ -1,16 +1,15 @@
 const express = require("express");
 const { getPublicRepos, getReadmeContents } = require("./controller");
-
+require('dotenv').config()
 const app = express();
 app.use(express.json());
 
 app.get("/portfolio-be/public", getPublicRepos);
 
-app.get("/portfolio-be/readme/:repo", getReadmeContents);
+// app.get("/portfolio-be/readme/:repo", getReadmeContents);
 
 app.use((err, req, res, next) => {
   const { response } = err;
-
   res.status(response.status).send({ error: response.statusText });
 });
 

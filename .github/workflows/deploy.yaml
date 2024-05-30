@@ -1,0 +1,29 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    name: "Deploy to staging"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{secrets.KRYSTAL_SSH}}" > ~/.ssh/krystal-ssh
+          chmod 600 ~/.ssh/krystal-ssh
+          cat >>~/.ssh/config <<END
+          Host staging
+            HostName eadu-lon1.krystal.uk
+            User dffcdddb
+            Port 722
+            IdentityFile ~/.ssh/krystal-ssh
+            StrictHostKeyChecking no
+          END
+      - name: Pull to cPanel
+        run: ssh staging 'cd /home/dffcdddb/repositories/${{secrets.CPANEL_REPO_NAME}} && git pull origin main && bash /home/dffcdddb/repositories/deploy-express-test.sh ${{secrets.CPANEL_WORKING_FOLDER}} ${{secrets.CPANEL_REPO_NAME}}'
+      - name: Run npm install
+        run: ssh staging 'source /home/dffcdddb/nodevenv/${{secrets.CPANEL_WORKING_FOLDER}}/16/bin/activate && cd /home/dffcdddb/${{secrets.CPANEL_WORKING_FOLDER}} && npm i'
+      - name: Restart the server
+        run: ssh staging 'touch ~/${{secrets.CPANEL_WORKING_FOLDER}}/tmp/restart.txt'
