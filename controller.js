@@ -198,7 +198,7 @@ const results = [
 ];
 
 getPublicRepos = (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://portfolio.helmfarm.co.uk");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.status(200).send(results);
 
   // conn
