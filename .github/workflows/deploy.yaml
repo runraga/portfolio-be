@@ -24,6 +24,6 @@ jobs:
       - name: Pull to cPanel
         run: ssh staging 'cd /home/dffcdddb/repositories/${{secrets.CPANEL_REPO_NAME}} && git pull origin main && bash /home/dffcdddb/repositories/deploy-express-test.sh ${{secrets.CPANEL_WORKING_FOLDER}} ${{secrets.CPANEL_REPO_NAME}}'
       - name: Run npm install
-        run: ssh staging 'source /home/dffcdddb/nodevenv/${{secrets.CPANEL_WORKING_FOLDER}}/16/bin/activate && cd /home/dffcdddb/${{secrets.CPANEL_WORKING_FOLDER}} && npm i'
+        run: ssh staging 'source /home/dffcdddb/nodevenv/${{secrets.CPANEL_WORKING_FOLDER}}/20/bin/activate && cd /home/dffcdddb/${{secrets.CPANEL_WORKING_FOLDER}} && npm i'
       - name: Restart the server
         run: ssh staging 'touch ~/${{secrets.CPANEL_WORKING_FOLDER}}/tmp/restart.txt'
