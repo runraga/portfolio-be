@@ -9,7 +9,7 @@ app.use(cors());
 
 app.get("/portfolio-be", getPublicRepos);
 
-// app.get("/portfolio-be/readme/:repo", getReadmeContents);
+app.get("/portfolio-be/readme/:repo", getReadmeContents);
 
 app.use((err, req, res, next) => {
   const { response } = err;
