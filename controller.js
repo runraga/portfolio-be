@@ -20,7 +20,7 @@ convertReadme = (decodedReadme) => {
   };
   const readmeInfo = {};
   for (const [k, v] of Object.entries(regexLookup)) {
-    const regex = new RegExp(`(?<=${v})[^#]+`);
+    const regex = new RegExp(`(?<=${v})(?:(?!C#).)+`);
     const matches = decodedReadme.match(regex);
     if (matches) {
       readmeInfo[k] = matches[0].trim();
