@@ -12,7 +12,7 @@ const conn = axios.create({
 
 convertReadme = (decodedReadme) => {
   const regexLookup = {
-    title: "^#",
+    title: "#",
     description: "Short description",
     languages: "Languages used",
     overview: "Overview",
@@ -20,7 +20,7 @@ convertReadme = (decodedReadme) => {
   };
   const readmeInfo = {};
   for (const [k, v] of Object.entries(regexLookup)) {
-    const regex = new RegExp(`(?<=${v}).*?(?=\n#|$)`);
+    const regex = new RegExp(`(?<=${v})[^#]+`);
     const matches = decodedReadme.match(regex);
     if (matches) {
       readmeInfo[k] = matches[0].trim();
