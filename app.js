@@ -1,34 +1,54 @@
-console.log("Portfolio backend starting...");
-console.log("GIT_HUB_AUTHENTICATION present?", !!process.env.GIT_HUB_AUTHENTICATION);
-const express = require("express");
-const cors = require("cors");
-const { getPublicRepos, getReadmeContents } = require("./controller");
 require("dotenv").config();
+
+const express = require("express");
+const { getPublicRepos, getReadmeContents } = require("./controller");
+
 const app = express();
+
 app.use(express.json());
 
-app.use(cors());
-
-app.get('/', (req, res) => {
-  res.json({ status: 'ok' });
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+  });
 });
 
-app.get("/portfolio-be", getPublicRepos);
+app.get("/api/projects", getPublicRepos);
 
-app.get("/portfolio-be/readme/:repo", getReadmeContents);
+app.get("/api/projects/:repo/readme", async (req, res, next) => {
+  try {
+    const readme = await getReadmeContents(req.params.repo);
+
+    if (!readme) {
+      return res.status(404).json({
+        error: "README not found",
+      });
+    }
+
+    return res.status(200).json(readme);
+  } catch (err) {
+    next(err);
+  }
+});
 
 app.use((err, req, res, next) => {
-  const { response } = err;
-  res.status(response.status).send({ error: response.statusText });
+  console.error(err);
+
+  const status = err.response?.status || 500;
+
+  res.status(status).json({
+    error:
+      err.response?.data?.message ||
+      err.message ||
+      "Internal server error",
+  });
 });
 
-const port = process.env.PORT || 8080;
-app.listen(port, (err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(`listening on port ${port}`);
-  }
+const port = process.env.PORT || 3001;
+const host = "127.0.0.1";
+
+app.listen(port, host, () => {
+  console.log(`Portfolio backend listening on http://${host}:${port}`);
 });
 
 module.exports = app;
